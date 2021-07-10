@@ -5,18 +5,20 @@ import (
 )
 
 func main() {
-	m := []string{
-		"one", "two", "three",
-	}
-	fmt.Println(m)
-	m = insert(m, "*", 2)
-	m = insert(m, "*", 1)
-	fmt.Println(m)
+	data := "*新しい値*"
+	m1 := modify(data)
+	data = "+new data+"
+	m2 := modify(data)
+
+	fmt.Println(m1())
+	fmt.Println(m2())
 }
 
-func insert(a []string, v string, p int) (s []string) {
-	s = append(a, "")
-	s = append(s[:p+1], s[p:len(s)-1]...)
-	s[p] = v
-	return
+func modify(d string) func() []string {
+	m := []string{
+		"1st", "2nd",
+	}
+	return func() []string {
+		return append(m, d)
+	}
 }
