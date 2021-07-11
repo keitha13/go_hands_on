@@ -9,10 +9,16 @@ type Mydata struct {
 	Data []int
 }
 
+func (md Mydata) PrintData() {
+	fmt.Println("*** Mydata ***")
+	fmt.Println("Name: ", md.Name)
+	fmt.Println("Data: ", md.Data)
+	fmt.Println("*** end ***")
+}
+
 func main() {
-	taro := new(Mydata)
-	fmt.Println(taro)
-	taro.Name = "taro"
-	taro.Data = make([]int, 5)
-	fmt.Println(taro)
+	taro := Mydata{
+		"hanako", []int{98, 76, 54, 32, 10},
+	}
+	taro.PrintData()
 }
