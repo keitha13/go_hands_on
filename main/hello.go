@@ -4,10 +4,17 @@ import (
 	"fmt"
 )
 
+type Mydata struct {
+	Name string
+	Data []int
+}
+
 func main() {
-	n := 123
-	p := &n
-	fmt.Println("number:", n)
-	fmt.Println("pointer:", p)
-	fmt.Println("value:", *p)
+	taro := Mydata{"Taro", []int{10, 20, 30}}
+	hanako := Mydata{
+		Name: "hanako",
+		Data: []int{90, 80, 70},
+	}
+	fmt.Println(taro)
+	fmt.Println(hanako)
 }
