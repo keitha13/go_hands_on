@@ -6,26 +6,29 @@ import (
 	"time"
 )
 
+func prmsg(n int, s string) {
+	fmt.Println(s)
+	time.Sleep(time.Duration(n) * time.Millisecond)
+}
+
+func first(n int, c chan string) {
+	const nm string = "first-"
+	for i := 0; i < 10; i++ {
+		s := nm + strconv.Itoa(i)
+		prmsg(n, s)
+		c <- s
+	}
+}
+
+func second(n int, c chan string) {
+	for i := 0; i < 10; i++ {
+		prmsg(n, "second:["+<-c+"]")
+	}
+}
+
 func main() {
-	msg := "start"
-	prmsg := func (nm string, n int)  {
-		fmt.Println(nm, msg)
-		time.Sleep(time.Duration(n) * time.Millisecond)
-	}
-	hello := func (n int)  {
-		const nm string = "hello"
-		for i := 0; i < 10; i++ {
-			msg += " h" + strconv.Itoa(i)
-			prmsg(nm, n)
-		}
-	}
-	main := func (n int)  {
-		const nm string = "*main"
-		for i := 0; i < 5; i++ {
-			msg += " m" + strconv.Itoa(i)
-			prmsg(nm, 100)
-		}
-	}
-	go hello(60)
-	main(100)
+	c := make(chan string)
+	go first(10, c)
+	second(10, c)
+	fmt.Println()
 }
