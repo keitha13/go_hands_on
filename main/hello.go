@@ -2,58 +2,30 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+	"strconv"
+	"time"
 )
 
-type General interface{}
-
-type GData interface {
-	Set(nm string, g General) GData
-	Print()
-}
-
-type NData struct {
-	Name string
-	Data []int
-}
-
-func (nd *NData) Set(nm string, g General) GData {
-	nd.Name = nm
-	if reflect.TypeOf(g) == reflect.SliceOf(reflect.TypeOf(0)) {
-		nd.Data = g.([]int)
-	}
-	return nd
-}
-
-func (nd *NData) Print() {
-	fmt.Printf("<<%s>> value: %d\n", nd.Name, nd.Data)
-}
-
-type SData struct {
-	Name string
-	Data []string
-}
-
-func (sd *SData) Set(nm string, g General) GData {
-	sd.Name = nm
-	if reflect.TypeOf(g) == reflect.SliceOf(reflect.TypeOf("")) {
-		sd.Data = g.([]string)
-	}
-	return sd
-}
-
-func (sd *SData) Print() {
-	fmt.Printf("* %s [%s] *\n", sd.Name, sd.Data)
-	fmt.Println()
-}
-
 func main() {
-	var data = []GData{}
-	data = append(data, new(NData).Set("taro", []int{1, 2, 3}))
-	data = append(data, new(SData).Set("jiro", []string{"hello", "bye"}))
-	data = append(data, new(NData).Set("saburo", 999))
-	data = append(data, new(SData).Set("shiro", "happy"))
-	for _, ob := range data {
-		ob.Print()
+	msg := "start"
+	prmsg := func (nm string, n int)  {
+		fmt.Println(nm, msg)
+		time.Sleep(time.Duration(n) * time.Millisecond)
 	}
+	hello := func (n int)  {
+		const nm string = "hello"
+		for i := 0; i < 10; i++ {
+			msg += " h" + strconv.Itoa(i)
+			prmsg(nm, n)
+		}
+	}
+	main := func (n int)  {
+		const nm string = "*main"
+		for i := 0; i < 5; i++ {
+			msg += " m" + strconv.Itoa(i)
+			prmsg(nm, 100)
+		}
+	}
+	go hello(60)
+	main(100)
 }
